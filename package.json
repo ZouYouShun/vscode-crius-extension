@@ -1,32 +1,36 @@
 {
-  "name": "crius",
-  "displayName": "crius",
-  "description": "crius",
+  "name": "crius-tool",
+  "displayName": "Crius",
+  "description": "crius tool",
+  "publisher": "declanzou",
   "version": "0.0.1",
+  "repository": "https://github.com/ZouYouShun/vscode-crius-extension",
   "engines": {
-    "vscode": "^1.47.0"
+    "vscode": "^1.40.0"
   },
   "categories": [
-    "Other"
+    "Formatters"
   ],
   "activationEvents": [
     "*"
   ],
-  "configuration": {
-    "type": "object",
-    "title": "crius",
-    "properties": {
-      "crius.spaceNumber": {
-        "type": "number",
-        "default": 4,
-        "description": "that number of format begin space",
-        "scope": "window"
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "crius",
+      "properties": {
+        "crius-tool.spaceNumber": {
+          "type": "integer",
+          "default": 4,
+          "description": "that number of format begin space",
+          "scope": "resource"
+        }
       }
     }
   },
   "main": "./out/extension.js",
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "rm -rf ./out && npm run compile",
     "compile": "tsc -p ./",
     "lint": "eslint src --ext ts",
     "watch": "tsc -watch -p ./",

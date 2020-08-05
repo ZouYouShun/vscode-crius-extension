@@ -1,2 +1,3 @@
-# crius README
-https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide
+# [Crius](https://github.com/unadlib/crius)
+
+Crius tool box with formatter and snippets.

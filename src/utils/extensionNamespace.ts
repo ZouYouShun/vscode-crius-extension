@@ -1,1 +1,1 @@
-export const extensionNamespace = 'crius';
+export const extensionNamespace = 'crius-tool';
