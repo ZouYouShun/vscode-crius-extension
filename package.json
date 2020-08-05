@@ -4,6 +4,7 @@
   "description": "crius tool",
   "publisher": "declanzou",
   "version": "0.0.1",
+  "icon": "icon.png",
   "repository": "https://github.com/ZouYouShun/vscode-crius-extension",
   "engines": {
     "vscode": "^1.40.0"
