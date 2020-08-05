@@ -1,14 +1,14 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 
-import { parserString } from "./parserString";
-import { extensionNamespace } from "./utils";
+import {
+  extensionNamespace,
+} from "./utils";
+import { getFormatTemplate } from "./utils/getFormatTemplate";
 
 const startString = "@examples(`";
 const endString = "`)";
 
-const space = " ";
+export const space = " ";
 
 export function activate(context: vscode.ExtensionContext) {
   vscode.languages.registerDocumentFormattingEditProvider("typescriptreact", {
@@ -19,110 +19,58 @@ export function activate(context: vscode.ExtensionContext) {
         .getConfiguration(extensionNamespace)
         .get<number>("spaceNumber");
 
-      const start = text.indexOf(startString);
+      let actions: vscode.TextEdit[] = [];
 
-      const end = start + text.slice(start).indexOf(endString);
+      let remainTemplate = text;
 
-      const template = text.substring(start + startString.length, end);
+      while (remainTemplate) {
+        const [action, remain] = findAndFormat(
+          remainTemplate,
+          spaceNumber,
+          document
+        );
 
-      const resultTemplate = formatTemplate(template, spaceNumber);
+        if (action) {
+          actions = [...actions, action];
+        }
 
-      return [
-        vscode.TextEdit.replace(
-          new vscode.Range(
-            document.positionAt(start + startString.length),
-            document.positionAt(end)
-          ),
-          resultTemplate
-        ),
-      ];
+        remainTemplate = remain;
+      }
+
+      return actions;
     },
   });
 
-  function formatTemplate(template: string, spaceNumber: number = 4) {
-    const [obj, keyArr] = parserString(template);
+  function findAndFormat(
+    text: string,
+    spaceNumber: number | undefined,
+    document: vscode.TextDocument
+  ): [vscode.TextEdit | null, string] {
+    const start = text.lastIndexOf(startString);
 
-    const additionLength = 4 + 3 * (keyArr.length - 1);
+    const end = start + text.slice(start).indexOf(endString);
 
-    let maxLengthIndex = 0;
-
-    const maxLength = obj.reduce<number>((prev, curr, i) => {
-      const length = getObjectStringLength(Object.values(curr));
-
-      if (prev < length) {
-        maxLengthIndex = i;
-        return length;
-      }
-      return prev;
-    }, getObjectStringLength(keyArr));
-
-    const templateArr: string[][] = [];
-
-    for (let i = 0; i < obj.length + 1; i++) {
-      templateArr.push([]);
-
-      for (let j = 0; j < maxLength + additionLength; j++) {
-        templateArr[i].push(" ");
-      }
+    if (start === -1) {
+      return [null, ""];
     }
 
-    const breakPosition = getBreakPosition(obj, maxLengthIndex, keyArr);
+    const template = text.substring(start + startString.length, end);
 
-    keyArr.forEach((key, index) => {
-      for (let i = 0; i < key.length; i++) {
-        const char = key[i];
-        templateArr[0][breakPosition[index] + 2 + i] = char;
-      }
+    const resultTemplate = getFormatTemplate(template, spaceNumber);
 
-      obj.forEach((o, objIndex) => {
-        const val = o[key];
-
-        for (let i = 0; i < val.length; i++) {
-          const char = val[i];
-          templateArr[1 + objIndex][breakPosition[index] + 2 + i] = char;
-        }
-      });
-    });
-
-    templateArr.forEach((t) => {
-      breakPosition.forEach((position) => {
-        t[position] = "|";
-      });
-    });
-
-    const resultTemplate =
-      templateArr.reduce((prev, curr) => {
-        prev += space.repeat(spaceNumber) + curr.join("") + "\r\n";
-        return prev;
-      }, "\r\n") + space.repeat(spaceNumber / 2);
-
-    return resultTemplate;
-  }
-
-  function getBreakPosition(
-    obj: { [K: string]: string }[],
-    maxLengthIndex: number,
-    keyArr: string[]
-  ) {
-    const breakPosition = [];
-    const maxObj = obj[maxLengthIndex];
-    let currentCursorPosition = 0;
-    breakPosition.push(0);
-    currentCursorPosition += 2;
-
-    keyArr.forEach((x) => {
-      currentCursorPosition += maxObj[x].length + 1;
-      breakPosition.push(currentCursorPosition);
-      currentCursorPosition += 2;
-    });
-    return breakPosition;
-  }
-
-  function getObjectStringLength(curr: string[]) {
-    return curr.reduce((total, currentValue) => {
-      return total + currentValue.length;
-    }, 0);
+    return [
+      vscode.TextEdit.replace(
+        new vscode.Range(
+          document.positionAt(start + startString.length),
+          document.positionAt(end)
+        ),
+        resultTemplate
+      ),
+      text.slice(0, start),
+    ];
   }
 }
 
 export function deactivate() {}
+
+
