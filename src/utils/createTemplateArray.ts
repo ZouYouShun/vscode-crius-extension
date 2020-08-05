@@ -5,7 +5,7 @@ export function createTemplateArray(row: number, column: number) {
     templateArr.push([]);
 
     for (let j = 0; j < column; j++) {
-      templateArr[i].push(" ");
+      templateArr[i].push(' ');
     }
   }
   return templateArr;

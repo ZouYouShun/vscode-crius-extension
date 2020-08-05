@@ -16,6 +16,12 @@
     "*"
   ],
   "contributes": {
+    "commands": [
+      {
+        "command": "crius-tool.criusProps",
+        "title": "Crius: Create typescript interface with crius example."
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "crius",

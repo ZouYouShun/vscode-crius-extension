@@ -6,3 +6,4 @@
 ### first release
 
 - add crius formatter
+- add crius typescript interface creator

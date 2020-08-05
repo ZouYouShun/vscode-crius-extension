@@ -1,10 +1,6 @@
-import {
-  createTemplateArray,
+import { space } from '../extension';
+import { createTemplateArray, getBreakPosition, parserString } from './';
 
-  getBreakPosition,
-  parserString
-} from "./";
-import { space } from "../extension";
 export function getFormatTemplate(template: string, spaceNumber: number = 4) {
   const [obj, keyArr] = parserString(template);
 
@@ -26,7 +22,7 @@ export function getFormatTemplate(template: string, spaceNumber: number = 4) {
 
   const templateArr: string[][] = createTemplateArray(
     obj.length,
-    maxArr.join("").length + additionLength
+    maxArr.join('').length + additionLength,
   );
 
   const breakPosition = getBreakPosition(maxArr);
@@ -51,15 +47,16 @@ export function getFormatTemplate(template: string, spaceNumber: number = 4) {
   // write break |
   templateArr.forEach((t) => {
     breakPosition.forEach((position) => {
-      t[position] = "|";
+      t[position] = '|';
     });
   });
 
   // join result
-  const resultTemplate = templateArr.reduce((prev, curr) => {
-    prev += space.repeat(spaceNumber) + curr.join("") + "\r\n";
-    return prev;
-  }, "\r\n") + space.repeat(spaceNumber / 2);
+  const resultTemplate =
+    templateArr.reduce((prev, curr) => {
+      prev += space.repeat(spaceNumber) + curr.join('') + '\r\n';
+      return prev;
+    }, '\r\n') + space.repeat(spaceNumber / 2);
 
   return resultTemplate;
 }

@@ -1,14 +1,14 @@
 export function parserString(
-  text: string
+  text: string,
 ): [
   {
     [K: string]: string;
   }[],
-  string[]
+  string[],
 ] {
   const rawArray = text
-    .split("|")
-    .map((text) => (typeof text === "string" ? text.trim() : text));
+    .split('|')
+    .map((text) => (typeof text === 'string' ? text.trim() : text));
   const dataArray = rawArray.filter((i) => i);
   const length = rawArray.length - dataArray.length - 1;
   const keyLength = dataArray.length / length;
@@ -22,8 +22,8 @@ export function parserString(
   for (let l = length; l-- > 1; ) {
     arr[l - 1] = {};
     for (let k = keyLength; k-- > 0; ) {
-      if (typeof dataArray[k] === "undefined") {
-        throw new Error("errerMessage");
+      if (typeof dataArray[k] === 'undefined') {
+        throw new Error('errerMessage');
       }
       let value: any;
       try {

@@ -1,23 +1,24 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
-import {
-  extensionNamespace,
-} from "./utils";
-import { getFormatTemplate } from "./utils/getFormatTemplate";
+import { criusPropsCommand } from './commands';
+import { extensionNamespace } from './utils';
+import { getFormatTemplate } from './utils/getFormatTemplate';
 
-const startString = "@examples(`";
-const endString = "`)";
+const startString = '@examples(`';
+const endString = '`)';
 
-export const space = " ";
+export const space = ' ';
 
 export function activate(context: vscode.ExtensionContext) {
-  vscode.languages.registerDocumentFormattingEditProvider("typescriptreact", {
+  context.subscriptions.push(criusPropsCommand);
+
+  vscode.languages.registerDocumentFormattingEditProvider('typescriptreact', {
     provideDocumentFormattingEdits(document: vscode.TextDocument) {
       const text = document.getText();
 
       const spaceNumber = vscode.workspace
         .getConfiguration(extensionNamespace)
-        .get<number>("spaceNumber");
+        .get<number>('spaceNumber');
 
       let actions: vscode.TextEdit[] = [];
 
@@ -27,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
         const [action, remain] = findAndFormat(
           remainTemplate,
           spaceNumber,
-          document
+          document,
         );
 
         if (action) {
@@ -44,14 +45,14 @@ export function activate(context: vscode.ExtensionContext) {
   function findAndFormat(
     text: string,
     spaceNumber: number | undefined,
-    document: vscode.TextDocument
+    document: vscode.TextDocument,
   ): [vscode.TextEdit | null, string] {
     const start = text.lastIndexOf(startString);
 
     const end = start + text.slice(start).indexOf(endString);
 
     if (start === -1) {
-      return [null, ""];
+      return [null, ''];
     }
 
     const template = text.substring(start + startString.length, end);
@@ -62,9 +63,9 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.TextEdit.replace(
         new vscode.Range(
           document.positionAt(start + startString.length),
-          document.positionAt(end)
+          document.positionAt(end),
         ),
-        resultTemplate
+        resultTemplate,
       ),
       text.slice(0, start),
     ];
@@ -72,5 +73,3 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {}
-
-
