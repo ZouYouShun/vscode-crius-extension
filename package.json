@@ -18,6 +18,10 @@
   "contributes": {
     "commands": [
       {
+        "command": "crius-tool.criusFormat",
+        "title": "Crius: Format example."
+      },
+      {
         "command": "crius-tool.criusProps",
         "title": "Crius: Create typescript interface with crius example."
       }
