@@ -1,6 +1,9 @@
 # Change Log
 
 
+## 0.0.2
+- add keybinding with formatter
+
 ## 0.0.1
 
 ### first release
