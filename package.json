@@ -26,6 +26,13 @@
         "title": "Crius: Create typescript interface with crius example."
       }
     ],
+    "keybindings": [
+      {
+        "command": "crius-tool.criusFormat",
+        "key": "shift+cmd+i s",
+        "when": "editorTextFocus"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "crius",
