@@ -1,5 +1,6 @@
-import { space } from '../extension';
 import { createTemplateArray, getBreakPosition, parserString } from './';
+
+export const space = ' ';
 
 export function getFormatTemplate(template: string, spaceNumber: number = 4) {
   const [obj, keyArr] = parserString(template);

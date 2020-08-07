@@ -1,46 +1,59 @@
 import * as vscode from 'vscode';
 
-import { endString, startString } from '../extension';
 import { extensionNamespace } from './';
 import { getFormatTemplate } from './getFormatTemplate';
+
+export const startString = '@examples(`';
+export const startString2 = '@(examples`';
+export const endString = '`)';
 
 type RangeReplace = [vscode.Range, string];
 
 export function formatCrius(document: vscode.TextDocument) {
-  const text = document.getText();
-
   const spaceNumber = vscode.workspace
     .getConfiguration(extensionNamespace)
     .get<number>('spaceNumber');
 
   let actions: RangeReplace[] = [];
 
-  let remainTemplate = text;
+  function format(startText: string) {
+    let remainTemplate = document.getText();
+    while (remainTemplate) {
+      const [action, remain] = findAndFormat({
+        text: remainTemplate,
+        spaceNumber,
+        document,
+        startText,
+      });
 
-  while (remainTemplate) {
-    const [action, remain] = findAndFormat(
-      remainTemplate,
-      spaceNumber,
-      document,
-    );
+      if (action) {
+        actions = [...actions, action];
+      }
 
-    if (action) {
-      actions = [...actions, action];
+      remainTemplate = remain;
     }
-
-    remainTemplate = remain;
   }
+
+  format(startString);
+  format(startString2);
 
   return actions;
 }
 
+type FindAndFormatParams = {
+  text: string;
+  spaceNumber: number | undefined;
+  document: vscode.TextDocument;
+  startText: string;
+};
 
-function findAndFormat(
-  text: string,
-  spaceNumber: number | undefined,
-  document: vscode.TextDocument,
-): [RangeReplace | null, string] {
-  const start = text.lastIndexOf(startString);
+function findAndFormat({
+  text,
+  spaceNumber,
+  document,
+  startText,
+}: FindAndFormatParams): [RangeReplace | null, string] {
+  const start = text.lastIndexOf(startText);
 
   const end = start + text.slice(start).indexOf(endString);
 

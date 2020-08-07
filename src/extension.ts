@@ -3,11 +3,6 @@ import * as vscode from 'vscode';
 import { criusFormatCommand, criusPropsCommand } from './commands';
 import { formatCrius } from './utils';
 
-export const startString = '@examples(`';
-export const endString = '`)';
-
-export const space = ' ';
-
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(criusPropsCommand);
   context.subscriptions.push(criusFormatCommand);
