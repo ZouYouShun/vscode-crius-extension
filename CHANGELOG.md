@@ -1,5 +1,7 @@
 # Change Log
 
+## 0.0.4
+- add format with decorator
 
 ## 0.0.3
 - add support both `@examples(` and `@(examples`
