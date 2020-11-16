@@ -28,22 +28,7 @@ export function formatCrius(document: vscode.TextDocument) {
     }),
   );
 
-  formatter.runThoughAllText((text) =>
-    formatter.formatDecorator({
-      text,
-      startText: '\n\n@',
-      endText: 'class ',
-    }),
-  );
-
-  // * format start with comment
-  formatter.runThoughAllText((text) =>
-    formatter.formatDecorator({
-      text,
-      startText: '\n\n// @',
-      endText: 'class ',
-    }),
-  );
+  formatter.formatDecorator();
 
   return formatter.actions;
 }

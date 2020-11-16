@@ -1,6 +1,8 @@
+import * as ts from 'typescript';
 import * as vscode from 'vscode';
-import { getFormatTemplate } from './getFormatTemplate';
+
 import { RangeReplace } from './formatCrius';
+import { getFormatTemplate } from './getFormatTemplate';
 
 const testTypes = ['ut', 'it', 'e2e', 'manual'];
 const priorities = ['p0', 'p1', 'p2', 'p3'];
@@ -33,7 +35,7 @@ export class CriusFormatter {
       const [action, remain] = fn(remainTemplate);
 
       if (action) {
-        this.actions = [...this.actions, action];
+        this.actions.push(action);
       }
 
       remainTemplate = remain;
@@ -70,50 +72,78 @@ export class CriusFormatter {
     ];
   }
 
-  formatDecorator({
-    text,
-    startText,
-    endText,
-  }: FindAndFormatParams & {
-    endText: string;
-  }): [RangeReplace | null, string] {
-    const start = text.lastIndexOf(startText);
+  formatDecorator(): RangeReplace[] {
+    const template = this.document.getText();
 
-    const end = start + text.slice(start).indexOf(endText);
+    const sourceFile = ts.createSourceFile(
+      this.document.uri.toString(),
+      this.document.getText(),
+      ts.ScriptTarget.Latest,
+    );
 
-    if (start === -1) {
-      return [null, ''];
-    }
+    ts.forEachChild(sourceFile, (node) => {
+      const { decorators } = node;
+      if (decorators && decorators.length > 0) {
+        const decoratorList = decorators.map((decorator, i) => {
+          // -1 for get '@'
+          let start = decorator.expression.getFullStart() - 1;
+          let end = decorator.expression.getEnd();
 
-    const template = text.substring(start, end);
+          const leadingComments = ts.getLeadingCommentRanges(
+            template,
+            // -1 for previous line
+            end,
+          );
 
-    const t = template.split(/^@|\n/gm);
+          if (leadingComments?.length && i !== decorators.length - 1) {
+            // add comment to next line
+            (decorators[i + 1] as any).comment = leadingComments[0];
+          }
 
-    const resultTemplate = t
-      .filter((tag) => !!tag)
-      .map((tag) => ({
-        tag,
-        sort: criusSortArr.findIndex(
-          (c) => tag.replace(/\r?\n|\r|\s/g, '').split('(')[0] === c,
-        ),
-      }))
-      .sort((a, b) => {
-        return a.sort - b.sort;
-      });
+          const comment: ts.CommentRange = (decorator as any).comment;
 
-    return [
-      [
-        new vscode.Range(
-          this.document.positionAt(start),
-          this.document.positionAt(end),
-        ),
-        '\n\n' +
-          resultTemplate
-            .map((x) => `${x.tag.includes('//') ? '' : '@'}${x.tag}`)
-            .join('\n') +
-          '\n',
-      ],
-      text.slice(0, start),
-    ];
+          if (comment) {
+            start = comment.pos;
+          }
+
+          const trailingComments = ts.getTrailingCommentRanges(template, end);
+          if (trailingComments?.length) {
+            end = trailingComments[0].end;
+          }
+
+          const text = template.substring(start, end);
+          const escapedText =
+            (decorator.expression as any).escapedText ||
+            (decorator.expression as any).expression.escapedText;
+          return {
+            start,
+            end,
+            text,
+            escapedText,
+            sort: criusSortArr.findIndex((c) => escapedText === c),
+            comment: (decorator as any).comment,
+          };
+        });
+        const start = decoratorList[0].start;
+        const end = decoratorList[decoratorList.length - 1].end;
+
+        const resultTemplate = decoratorList
+          .sort((a, b) => {
+            return a.sort - b.sort;
+          })
+          .map((x) => x.text)
+          .join('\n');
+
+        this.actions.push([
+          new vscode.Range(
+            this.document.positionAt(start),
+            this.document.positionAt(end),
+          ),
+          resultTemplate,
+        ]);
+      }
+    });
+
+    return this.actions;
   }
 }

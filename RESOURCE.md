@@ -1,0 +1,1 @@
+https://quramy.medium.com/manipulate-comments-with-typescript-api-73d5f1d43d7f
