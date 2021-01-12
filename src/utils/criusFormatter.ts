@@ -11,6 +11,8 @@ const criusSortArr = [
   'autorun',
   ...testTypes,
   ...priorities,
+  'app',
+  'brand',
   'skip',
   'status',
   'title',
