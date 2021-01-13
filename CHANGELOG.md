@@ -1,12 +1,19 @@
 # Change Log
 
+## 0.0.5
+
+- add more decorator support
+
 ## 0.0.4
+
 - add format with decorator
 
 ## 0.0.3
+
 - add support both `@examples(` and `@(examples`
 
 ## 0.0.2
+
 - add keybinding with formatter
 
 ## 0.0.1

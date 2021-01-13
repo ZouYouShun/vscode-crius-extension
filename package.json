@@ -3,7 +3,7 @@
   "displayName": "Crius",
   "description": "crius tool",
   "publisher": "declanzou",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "icon": "icon.png",
   "repository": "https://github.com/ZouYouShun/vscode-crius-extension",
   "engines": {
