@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
 
-import { criusFormatCommand, criusPropsCommand } from './commands';
+import { criusFormatCommand, criusPropsCommand, teesCreateCommand } from './commands';
 import { formatCrius } from './utils';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(criusPropsCommand);
   context.subscriptions.push(criusFormatCommand);
+  context.subscriptions.push(teesCreateCommand);
 
   vscode.languages.registerDocumentFormattingEditProvider('typescriptreact', {
     provideDocumentFormattingEdits(document: vscode.TextDocument) {
