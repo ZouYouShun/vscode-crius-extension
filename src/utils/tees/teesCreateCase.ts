@@ -12,9 +12,10 @@ export async function teesCreateCase() {
   let projectList;
   const { rootPath } = vscode.workspace;
   if (rootPath) {
-    fs.readdir(`${rootPath}/packages/`, (err, files) => {
-      projectList = files;
-    });
+    const _dir = `${rootPath}/packages/`;
+    if (fs.existsSync(_dir)) {
+      projectList = fs.readdirSync(_dir);
+    }
   }
   if (caseId) {
     caseType = await vscode.window.showQuickPick(['E2E', 'UT/IT'], {
