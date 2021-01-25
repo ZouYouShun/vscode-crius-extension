@@ -1,7 +1,9 @@
+import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
+import { OutputChannel } from '..';
 
-export async function generateCreateCommand(caseId: string) {
+export async function teesCreateCase(caseId: string) {
     let caseType, projectPath;
     let projectList;
     const { rootPath } = vscode.workspace;
@@ -29,8 +31,11 @@ export async function generateCreateCommand(caseId: string) {
         }
     }
 
-
     const execCommand = caseType === 'E2E' ? `yarn run tees create ${caseId}` : `CASE_TYPE=IT PROJECT_PATH=${projectPath} yarn run tees create ${caseId}`;
+    vscode.window.showInformationMessage(`Creating ${caseType} case RCI-${caseId}......`);
 
-    return {execCommand, caseType, rootPath};
+    const result = execSync(`cd ${rootPath}/packages/ringcentral-e2e-test/ && ${execCommand}`);
+    console.log(result.toString());
+    
+    OutputChannel.appendLine(result.toString());
 }
