@@ -26,7 +26,7 @@
         "title": "Crius: Create typescript interface with crius example."
       },
       {
-        "command": "crius-tool.teesCreate",
+        "command": "crius-tool.downloadEinsteinCase",
         "title": "Crius: Create automation script using Einstein case."
       }
     ],

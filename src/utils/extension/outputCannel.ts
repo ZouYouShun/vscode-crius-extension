@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { extensionNamespace } from './extensionNamespace';
+import { extensionNamespace } from '../extensionNamespace';
 
 export class OutputChannel {
   private static instance: OutputChannel;

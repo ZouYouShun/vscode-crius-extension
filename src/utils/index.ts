@@ -6,6 +6,5 @@ export * from './extensionNamespace';
 export * from './formatCrius';
 export * from './getBreakPosition';
 export * from './getFormatTemplate';
-export * from './outputCannel';
 export * from './parserString';
-export * from './tees';
+export * from './testCaseGenerator';

@@ -1,12 +1,16 @@
 import * as vscode from 'vscode';
 
-import { criusFormatCommand, criusPropsCommand, teesCreateCommand } from './commands';
+import {
+  criusFormatCommand,
+  criusPropsCommand,
+  downloadEinsteinCaseCommand,
+} from './commands';
 import { formatCrius } from './utils';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(criusPropsCommand);
   context.subscriptions.push(criusFormatCommand);
-  context.subscriptions.push(teesCreateCommand);
+  context.subscriptions.push(downloadEinsteinCaseCommand);
 
   vscode.languages.registerDocumentFormattingEditProvider('typescriptreact', {
     provideDocumentFormattingEdits(document: vscode.TextDocument) {
