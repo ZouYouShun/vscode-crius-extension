@@ -24,6 +24,10 @@
       {
         "command": "crius-tool.criusProps",
         "title": "Crius: Create typescript interface with crius example."
+      },
+      {
+        "command": "crius-tool.teesCreate",
+        "title": "Crius: Create automation script using Einstein case."
       }
     ],
     "keybindings": [
