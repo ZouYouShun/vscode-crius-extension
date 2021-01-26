@@ -39,8 +39,7 @@ export class TestCaseGenerator {
         this.projectList = new Set(
           fs
             .readdirSync(packagesPath)
-            .filter((x) => x !== '.DS_Store')
-            .map((x) => path.join(packagesPath, x)),
+            .filter((x) => x !== '.DS_Store'),
         );
       }
 
