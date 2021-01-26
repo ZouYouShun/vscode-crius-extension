@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.7
+### Bug Fixes
+* **Download Einstein Case:** fix select project list
+
 ## 0.0.6
 ### Features
 * **Download Einstein Case:** Support download Einstein Case
