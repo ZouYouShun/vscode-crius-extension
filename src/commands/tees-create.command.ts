@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import { extensionNamespace, teesCreateCase } from '../utils';
+import { extensionNamespace, TestCaseGenerator } from '../utils';
 
 export const teesCreateCommand = vscode.commands.registerCommand(
   `${extensionNamespace}.teesCreate`,
   async () => {
-    await teesCreateCase();
+    await TestCaseGenerator.teesCreateCase();
   },
 );
