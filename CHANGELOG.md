@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.6
+### Features
+* **Download Einstein Case:** Support download Einstein Case
+
 ## 0.0.5
 
 - add more decorator support
