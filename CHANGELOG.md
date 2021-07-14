@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.8
+### Feature
+* **Rename:** rename from `Einstein` to `TestIt`
+* 
 ## 0.0.7
 ### Bug Fixes
 * **Download Einstein Case:** fix select project list
