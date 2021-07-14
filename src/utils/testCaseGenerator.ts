@@ -80,7 +80,7 @@ export class TestCaseGenerator {
     }
   }
 
-  async downloadEinsteinCase() {
+  async downloadTestItCase() {
     try {
       await this.getQuestionResult();
 
