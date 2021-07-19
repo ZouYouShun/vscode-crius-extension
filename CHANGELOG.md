@@ -1,16 +1,32 @@
 # Change Log
 
-## 0.0.8
+## 0.0.9
+
 ### Feature
-* **Rename:** rename from `Einstein` to `TestIt`
-* 
+
+- **Sort**: support decorator sort setting
+
+### Fix
+
+- **Sort**: change non-decaler decorators sort at bottom
+
+## 0.0.8
+
+### Feature
+
+- **Rename:** rename from `Einstein` to `TestIt`
+
 ## 0.0.7
+
 ### Bug Fixes
-* **Download Einstein Case:** fix select project list
+
+- **Download Einstein Case:** fix select project list
 
 ## 0.0.6
+
 ### Features
-* **Download Einstein Case:** Support download Einstein Case
+
+- **Download Einstein Case:** Support download Einstein Case
 
 ## 0.0.5
 
