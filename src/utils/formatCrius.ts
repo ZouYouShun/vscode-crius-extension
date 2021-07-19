@@ -10,6 +10,10 @@ export function formatCrius(document: vscode.TextDocument) {
     .getConfiguration(extensionNamespace)
     .get<number>('spaceNumber');
 
+  const decoratorSort = vscode.workspace
+    .getConfiguration(extensionNamespace)
+    .get<string[]>('decoratorSort');
+
   const formatter = new CriusFormatter(document);
 
   formatter.runThoughAllText((text) =>
@@ -28,7 +32,7 @@ export function formatCrius(document: vscode.TextDocument) {
     }),
   );
 
-  formatter.formatDecorator();
+  formatter.formatDecorator(decoratorSort);
 
   return formatter.actions;
 }

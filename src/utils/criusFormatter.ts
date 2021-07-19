@@ -74,7 +74,11 @@ export class CriusFormatter {
     ];
   }
 
-  formatDecorator(): RangeReplace[] {
+  formatDecorator(decoratorSort: string[]): RangeReplace[] {
+    if (decoratorSort.length === 0) {
+      decoratorSort = criusSortArr;
+    }
+
     const template = this.document.getText();
 
     const sourceFile = ts.createSourceFile(
@@ -117,12 +121,15 @@ export class CriusFormatter {
           const escapedText =
             (decorator.expression as any).escapedText ||
             (decorator.expression as any).expression.escapedText;
+
+          const currSort = decoratorSort.findIndex((c) => escapedText === c);
+
           return {
             start,
             end,
             text,
             escapedText,
-            sort: criusSortArr.findIndex((c) => escapedText === c),
+            sort: currSort > -1 ? currSort : Number.MAX_VALUE,
             comment: (decorator as any).comment,
           };
         });

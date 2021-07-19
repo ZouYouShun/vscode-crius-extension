@@ -46,6 +46,11 @@
           "default": 4,
           "description": "that number of format begin space",
           "scope": "resource"
+        },
+        "crius-tool.decoratorSort": {
+          "type": "array",
+          "description": "sort of that decorator",
+          "scope": "resource"
         }
       }
     }
