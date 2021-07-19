@@ -1,6 +1,12 @@
 # Change Log
 
-## 0.0.9
+## 0.1.0
+
+### Feat
+
+- **Sort**: add example with `crius-tool.decoratorSort`
+
+## 0.1.0
 
 ### Feature
 
