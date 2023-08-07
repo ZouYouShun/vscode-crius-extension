@@ -3,11 +3,11 @@
   "displayName": "Crius",
   "description": "crius tool",
   "publisher": "declanzou",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "icon": "icon.png",
   "repository": "https://github.com/ZouYouShun/vscode-crius-extension",
   "engines": {
-    "vscode": "^1.40.0"
+    "vscode": "^1.64.0"
   },
   "categories": [
     "Formatters"
@@ -51,34 +51,44 @@
           "type": "array",
           "description": "sort of that decorator",
           "scope": "resource"
+        },
+        "crius-tool.includeProjects": {
+          "type": "array",
+          "description": "addition projects folder that you want to use in create case",
+          "scope": "resource"
         }
       }
     }
   },
   "main": "./out/extension.js",
   "scripts": {
-    "vscode:prepublish": "rm -rf ./out && npm run compile",
-    "compile": "tsc -p ./",
-    "lint": "eslint src --ext ts",
     "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
     "test": "node ./out/test/runTest.js",
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "test-compile": "tsc -p ./",
     "package": "vsce package"
   },
   "devDependencies": {
-    "@types/vscode": "^1.40.0",
-    "@types/glob": "^7.1.1",
-    "@types/mocha": "^7.0.2",
-    "@types/node": "^13.11.0",
-    "eslint": "^6.8.0",
-    "@typescript-eslint/parser": "^2.30.0",
-    "@typescript-eslint/eslint-plugin": "^2.30.0",
-    "glob": "^7.1.6",
-    "mocha": "^7.1.2",
-    "typescript": "^3.8.3",
-    "vscode-test": "^1.3.0"
+    "@babel/generator": "^7.17.3",
+    "@types/fs-extra": "^9.0.13",
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "16.x",
+    "@types/prettier": "^2.4.4",
+    "@types/vscode": "^1.64.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "@vscode/test-electron": "^2.0.3",
+    "esbuild": "^0.14.23",
+    "eslint": "^8.6.0",
+    "glob": "^7.2.0",
+    "mocha": "^9.1.3",
+    "typescript": "^4.5.4"
   },
   "dependencies": {
-    "typescript": "^3.8.3"
+    "typescript": "^4.5.4"
   }
 }

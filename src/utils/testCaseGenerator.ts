@@ -5,6 +5,10 @@ import * as vscode from 'vscode';
 
 import { OutputChannel } from './extension';
 
+type TestCaseGeneratorOptions = {
+  includeProjects: string[];
+};
+
 export class TestCaseGenerator {
   private caseId: string;
   private caseType: string;
@@ -12,7 +16,11 @@ export class TestCaseGenerator {
   private projectList = new Set<string>();
   private targetPath: string;
 
-  constructor() {
+  get includeProjects() {
+    return this.options.includeProjects ?? [];
+  }
+
+  constructor(private options: TestCaseGeneratorOptions) {
     // TODO: get config from setting
   }
 
@@ -37,9 +45,7 @@ export class TestCaseGenerator {
       const packagesPath = `${rootPath}/packages`;
       if (fs.existsSync(packagesPath)) {
         this.projectList = new Set(
-          fs
-            .readdirSync(packagesPath)
-            .filter((x) => x !== '.DS_Store'),
+          fs.readdirSync(packagesPath).filter((x) => x !== '.DS_Store'),
         );
       }
 
@@ -68,7 +74,7 @@ export class TestCaseGenerator {
 
     if (this.caseType === 'UT/IT') {
       this.projectPath = await vscode.window.showQuickPick(
-        [...this.projectList],
+        [...this.includeProjects, ...this.projectList],
         {
           canPickMany: false,
         },
@@ -95,7 +101,9 @@ export class TestCaseGenerator {
         {
           cancellable: true,
           location: vscode.ProgressLocation.Notification,
-          title: `Creating ${this.caseType} case RCI-${this.caseId} ......`,
+          title: `Creating ${this.caseType} case RCI-${this.caseId} ......
+          
+          ${execCommand}`,
         },
         (process, token) => {
           return new Promise<string>((resolve, reject) => {

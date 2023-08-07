@@ -5,6 +5,10 @@ import { extensionNamespace, TestCaseGenerator } from '../utils';
 export const downloadTestItCaseCommand = vscode.commands.registerCommand(
   `${extensionNamespace}.downloadTestItCase`,
   async () => {
-    await new TestCaseGenerator().downloadTestItCase();
+    const includeProjects = vscode.workspace
+      .getConfiguration(extensionNamespace)
+      .get<string[]>('includeProjects');
+
+    await new TestCaseGenerator({ includeProjects }).downloadTestItCase();
   },
 );
