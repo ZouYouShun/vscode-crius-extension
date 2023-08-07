@@ -88,7 +88,9 @@ export class CriusFormatter {
     );
 
     ts.forEachChild(sourceFile, (node) => {
-      const { decorators } = node;
+      const decorators = ts.canHaveDecorators(node)
+        ? ts.getDecorators(node)
+        : undefined;
       if (decorators && decorators.length > 0) {
         const decoratorList = decorators.map((decorator, i) => {
           // -1 for get '@'
