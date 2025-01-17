@@ -53,14 +53,14 @@ export class TestCaseGenerator {
     }
 
     this.caseId = await vscode.window.showInputBox({
-      placeHolder: 'Please enter case ID or IDs(eg. 1000 or 1000, 1001)',
+      placeHolder: 'Please enter case ID or IDs(eg. 1000 or 1000,1001)',
     });
 
     if (this.caseId === '') {
       throw new Error('no caseId');
     }
 
-    if (isNaN(Number(this.caseId))) {
+    if (!/^\d+(,\s*\d+)*$/.test(this.caseId)) {
       throw new Error('error caseId');
     }
 
@@ -130,10 +130,14 @@ export class TestCaseGenerator {
     } catch (error) {
       switch (error.message) {
         case 'error caseId':
-          vscode.window.showErrorMessage('Please enter an case ID like: 1000');
+          vscode.window.showErrorMessage(
+            'Please enter an case ID like: 1000 or 1000,1001',
+          );
           break;
 
         default:
+          vscode.window.showErrorMessage(error.message);
+
           break;
       }
     }

@@ -1,6 +1,12 @@
 # Change Log
 
-## 0.1.0
+## 0.2.2
+
+### Feat
+
+- **Multiple Case**: support create multiple case once
+
+## 0.2.1
 
 ### Feat
 
